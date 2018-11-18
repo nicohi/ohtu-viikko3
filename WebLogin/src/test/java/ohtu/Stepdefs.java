@@ -32,6 +32,24 @@ public class Stepdefs {
         element.submit();  
     }
 
+	@Given("^user with username \"([^\"]*)\" with password \"([^\"]*)\" is successfully created$")
+    public void user_with_username_with_password_is_successfully_created(String arg1, String arg2) throws Throwable {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));       
+        element.click();          
+		registerWith(arg1, arg2, arg2);
+        assertTrue(driver.getPageSource().contains("Welcome to Ohtu Application!"));
+    }
+
+    @Given("^user with username \"([^\"]*)\" and password \"([^\"]*)\" is tried to be created$")
+    public void user_with_username_and_password_is_tried_to_be_created(String arg1, String arg2) throws Throwable {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));       
+        element.click();          
+		registerWith(arg1, arg2, arg2);
+    }
+
+
     @Then("^system will respond \"([^\"]*)\"$")
     public void system_will_respond(String pageContent) throws Throwable {
         assertTrue(driver.getPageSource().contains(pageContent));

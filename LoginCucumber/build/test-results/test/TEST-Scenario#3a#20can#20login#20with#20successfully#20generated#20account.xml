@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Scenario: can login with successfully generated account" tests="5" skipped="0" failures="0" errors="0" timestamp="2018-11-18T16:54:34" hostname="nano" time="0.001">
+<testsuite name="Scenario: can login with successfully generated account" tests="5" skipped="0" failures="0" errors="0" timestamp="2018-11-18T18:07:41" hostname="nano" time="0.001">
   <properties/>
   <testcase name="Given user &quot;eero&quot; with password &quot;salainen1&quot; is created" classname="Scenario: can login with successfully generated account" time="0.0"/>
   <testcase name="And command login is selected" classname="Scenario: can login with successfully generated account" time="0.0"/>
