@@ -1,6 +1,8 @@
 package ohtu;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.http.client.fluent.Request;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class Main {
 
@@ -22,6 +26,7 @@ public class Main {
         String url = "https://studies.cs.helsinki.fi/courses/students/"+studentNr+"/submissions";
 
 		String ohjUrl = "https://studies.cs.helsinki.fi/courses/courseinfo";
+		String statsUrl = "https://studies.cs.helsinki.fi/courses/";
 
         String bodyText = Request.Get(url).execute().returnContent().asString();
         String bodyText2 = Request.Get(ohjUrl).execute().returnContent().asString();
@@ -74,6 +79,25 @@ public class Main {
 			System.out.println("yhteensä: "+totals.stream().mapToInt(x -> x).sum()
 					+"/"+Arrays.stream(courseD.getExercises()).mapToDouble(x -> x).sum()+" tehtävää "
 					+totalsT.stream().mapToInt(x -> x).sum()+" tuntia\n");
+			String statsResponse = Request.Get(statsUrl+"/"+course+"/stats").execute().returnContent().asString();
+			JsonParser parser = new JsonParser();
+			JsonObject parsittuData = parser.parse(statsResponse).getAsJsonObject();
+			int pal = 0;
+			int teht = 0;
+			int aik = 0;
+			for (int i = 1; i < parsittuData.size() + 1; i++) {
+				JsonObject e = parsittuData.getAsJsonObject(Integer.toString(i));
+				pal += e.get("students").getAsInt();
+				teht += e.get("exercise_total").getAsInt();
+				JsonArray a = e.get("hours").getAsJsonArray();
+				for (int j = 0; j < a.size(); j++) {
+					try {
+					aik += a.get(j).getAsInt();
+					} catch (Exception f) {
+					}
+				}
+			}
+			System.out.println("Kurssilla yhteensä "+pal+" palautusta, palautettuja tehtäviä "+teht+" kpl, aikaa käytetty yhteensä "+aik+" tuntia\n");
 		}	
 
     }
